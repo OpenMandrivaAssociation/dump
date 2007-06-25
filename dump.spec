@@ -1,6 +1,6 @@
 %define	name	dump
 %define version 0.4b41
-%define release %mkrel 2
+%define release %mkrel 3
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		%{name}
@@ -10,9 +10,9 @@ License:	BSD
 Group:		Archiving/Backup
 
 Source: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.bz2
-Patch0:		dump-nonroot.patch.bz2
-Patch2:		dump-0.4b34-check-systypes.patch.bz2
-Patch3:		dump-0.4b37-compile-fix.patch.bz2
+Patch0:		dump-nonroot.patch
+Patch2:		dump-0.4b34-check-systypes.patch
+Patch3:		dump-0.4b37-compile-fix.patch
 Url:		http://sourceforge.net/projects/dump/
 
 Requires:	rmt = %{version}-%{release}
