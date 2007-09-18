@@ -1,6 +1,6 @@
 %define	name	dump
 %define version 0.4b41
-%define release %mkrel 3
+%define release %mkrel 4
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		%{name}
