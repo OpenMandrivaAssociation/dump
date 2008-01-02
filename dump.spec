@@ -23,6 +23,7 @@ BuildRequires:	readline-devel
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	openssl-devel >= 0.9.7a
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The dump package contains both dump and restore.  Dump examines files in
