@@ -1,6 +1,6 @@
 %define	name	dump
 %define version 0.4b41
-%define release %mkrel 8
+%define release %mkrel 9
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		%{name}
@@ -16,7 +16,7 @@ Patch3:		dump-0.4b37-compile-fix.patch
 Url:		http://sourceforge.net/projects/dump/
 
 Requires:	rmt = %{version}-%{release}
-BuildRequires:	e2fsprogs-devel >= 1.15
+BuildRequires:	libblkid-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	termcap-devel
 BuildRequires:	readline-devel
