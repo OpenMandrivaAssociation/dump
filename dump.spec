@@ -1,6 +1,6 @@
 %define	name	dump
 %define version 0.4b41
-%define release %mkrel 9
+%define release %mkrel 10
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		%{name}
@@ -13,6 +13,7 @@ Source: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{ve
 Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
+Patch4:		dump_progname_mips.patch
 Url:		http://sourceforge.net/projects/dump/
 
 Requires:	rmt = %{version}-%{release}
@@ -49,6 +50,7 @@ restoring files from a backup) and tar (an archiving program).
 %patch0 -p0 -b .nonroot
 %patch2 -p1 -b .check-systypes
 %patch3 -p1 -b .compfix
+%patch4 -p1 -b .progname
 autoconf
 
 %build
@@ -59,7 +61,7 @@ autoconf
 	--enable-ermt \
 	--disable-kerberos
 
-%make OPT="$RPM_OPT_FLAGS -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
+%make OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
 
 %install
 rm -rf $RPM_BUILD_ROOT
