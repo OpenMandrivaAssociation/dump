@@ -24,6 +24,7 @@ BuildRequires:	readline-devel
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	openssl-devel >= 0.9.7a
+BuildRequires:	e2fsprogs-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
