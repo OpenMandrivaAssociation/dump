@@ -1,6 +1,6 @@
 %define	name	dump
-%define version 0.4b41
-%define release %mkrel 10
+%define version 0.4b42
+%define release %mkrel 1
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		%{name}
@@ -9,12 +9,14 @@ Release:	%{release}
 License:	BSD
 Group:		Archiving/Backup
 
-Source: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.bz2
+Source: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
 Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
 Patch4:		dump_progname_mips.patch
-Url:		http://sourceforge.net/projects/dump/
+Patch5:		dump-rh507948.patch
+Patch6:		build-without-selinux.patch
+URL:		http://sourceforge.net/projects/dump/
 
 Requires:	rmt = %{version}-%{release}
 BuildRequires:	libblkid-devel
@@ -52,6 +54,9 @@ restoring files from a backup) and tar (an archiving program).
 %patch2 -p1 -b .check-systypes
 %patch3 -p1 -b .compfix
 %patch4 -p1 -b .progname
+%patch5 -p1 -b .rh507948
+%patch6 -p0 -b .selinux
+
 autoconf
 
 %build
@@ -60,29 +65,31 @@ autoconf
 	--with-mangrp=root \
 	--with-manmode=644 \
 	--enable-ermt \
-	--disable-kerberos
+	--disable-kerberos \
+	--disable-transselinux
+	
 
 %make OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-make install SBINDIR=$RPM_BUILD_ROOT/sbin BINDIR=$RPM_BUILD_ROOT/sbin MANDIR=${RPM_BUILD_ROOT}%{_mandir}/man8
+make install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
 
 for i in dump restore; do
-  mv $RPM_BUILD_ROOT/sbin/$i $RPM_BUILD_ROOT/sbin/$i.ext3
-  ln -s $i.ext3 $RPM_BUILD_ROOT/sbin/$i.ext2
-  ln -s $i.ext3 $RPM_BUILD_ROOT/sbin/$i
+  mv %{buildroot}/sbin/$i %{buildroot}/sbin/$i.ext3
+  ln -s $i.ext3 %{buildroot}/sbin/$i.ext2
+  ln -s $i.ext3 %{buildroot}/sbin/$i
 done
 
-pushd $RPM_BUILD_ROOT
+pushd %{buildroot}
   mkdir .%{_sysconfdir}
   > .%{_sysconfdir}/dumpdates
   ln -s ../sbin/rmt ./%{_sysconfdir}/rmt
 popd
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
