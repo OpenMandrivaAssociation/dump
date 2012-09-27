@@ -21,7 +21,6 @@ BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	bzip2-devel
-BuildRequires:	pkgconfig(libcrypto) >= 0.9.7a
 BuildRequires:	pkgconfig(ext2fs) 
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-9
