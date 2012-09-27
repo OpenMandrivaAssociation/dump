@@ -17,12 +17,12 @@ Patch6:		build-without-selinux.patch
 URL:		http://sourceforge.net/projects/dump/
 
 Requires:	rmt = %{version}-%{release}
-BuildRequires:	libblkid-devel
-BuildRequires:	ncurses-devel
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(blkid)
+BuildRequires:	pkgconfig(ncursesw)
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	bzip2-devel
-BuildRequires:	openssl-devel >= 0.9.7a
-BuildRequires:	e2fsprogs-devel
+BuildRequires:	pkgconfig(libcrypto) >= 0.9.7a
+BuildRequires:	pkgconfig(ext2fs) 
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-9
 %endif
