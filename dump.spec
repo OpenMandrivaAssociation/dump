@@ -39,6 +39,7 @@ may also be restored from full or partial backups.
 %package -n	uclibc-%{name}
 Summary:	uClibc linked build of %{name}
 Group:		Archiving/Backup
+Requires:	uclibc-rmt = %{version}-%{release}
 
 %description -n	uclibc-%{name}
 The dump package contains both dump and restore.  Dump examines files in
