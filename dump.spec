@@ -19,8 +19,6 @@ URL:		http://sourceforge.net/projects/dump/
 Requires:	rmt = %{version}-%{release}
 BuildRequires:	libblkid-devel
 BuildRequires:	ncurses-devel
-BuildRequires:	termcap-devel
-BuildRequires:	readline-devel
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	openssl-devel >= 0.9.7a
