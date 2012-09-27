@@ -1,7 +1,9 @@
+%bcond_without	uclibc
+
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
-Version:	03.b42
-Release:	3
+Version:	0.4b42
+Release:	4
 License:	BSD
 Group:		Archiving/Backup
 
@@ -23,8 +25,24 @@ BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	openssl-devel >= 0.9.7a
 BuildRequires:	e2fsprogs-devel
+%if %{with uclibc}
+BuildRequires:	uClibc-devel >= 0.9.33.2-9
+%endif
 
 %description
+The dump package contains both dump and restore.  Dump examines files in
+a filesystem, determines which ones need to be backed up, and copies
+those files to a specified disk, tape or other storage medium.  The
+restore command performs the inverse function of dump; it can restore a
+full backup of a filesystem.  Subsequent incremental backups can then be
+layered on top of the full backup.  Single files and directory subtrees
+may also be restored from full or partial backups.
+
+%package -n	uclibc-%{name}
+Summary:	uClibc linked build of %{name}
+Group:		Archiving/Backup
+
+%description -n	uclibc-%{name}
 The dump package contains both dump and restore.  Dump examines files in
 a filesystem, determines which ones need to be backed up, and copies
 those files to a specified disk, tape or other storage medium.  The
@@ -43,6 +61,15 @@ The rmt utility provides remote access to tape devices for programs
 like dump (a filesystem backup program), restore (a program for
 restoring files from a backup) and tar (an archiving program).
 
+%package -n	uclibc-rmt
+Summary:	uClibc linked build of rmt
+Group:		Archiving/Backup
+
+%description -n	uclibc-rmt
+The rmt utility provides remote access to tape devices for programs
+like dump (a filesystem backup program), restore (a program for
+restoring files from a backup) and tar (an archiving program).
+
 %prep
 %setup -q
 %patch0 -p0 -b .nonroot
@@ -54,7 +81,33 @@ restoring files from a backup) and tar (an archiving program).
 
 autoconf
 
+%if %{with uclibc}
+mkdir .uclibc
+cp -a * .uclibc
+%endif
+
+mkdir .system
+cp -a * .system
+
 %build
+%if %{with uclibc}
+pushd .uclibc
+%configure2_5x \
+	CC="%{uclibc_cc}" \
+	CFLAGS="%{uclibc_cflags}" \
+	--sbindir=%{uclibc_root}/sbin \
+	--bindir=%{uclibc_root}/sbin \
+	--with-manowner=root \
+	--with-mangrp=root \
+	--with-manmode=644 \
+	--enable-ermt \
+	--disable-kerberos \
+	--disable-transselinux
+%make top_builddir=$PWD
+popd
+%endif
+
+pushd .system	
 %configure2_5x \
 	--with-manowner=root \
 	--with-mangrp=root \
@@ -63,11 +116,15 @@ autoconf
 	--disable-kerberos \
 	--disable-transselinux
 	
-
-%make OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
+%make
+popd
 
 %install
-make install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
+%if %{with uclibc}
+%makeinstall_std -C .uclibc SBINDIR=%{buildroot}%{uclibc_root}/sbin BINDIR=%{buildroot}%{uclibc_root}/sbin MANDIR=%{buildroot}%{_mandir}/man8
+%endif
+
+make -C .system install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
 
 for i in dump restore; do
   mv %{buildroot}/sbin/$i %{buildroot}/sbin/$i.ext3
@@ -95,8 +152,21 @@ popd
 %{_mandir}/man8/restore.8*
 %{_mandir}/man8/rrestore.8*
 
+%if %{with uclibc}
+%files -n uclibc-%{name}
+%{uclibc_root}/sbin/dump*
+%{uclibc_root}/sbin/restore*
+%{uclibc_root}/sbin/rdump
+%{uclibc_root}/sbin/rrestore
+%endif
+
 %files -n rmt
 %doc COPYRIGHT
 /sbin/rmt
 %{_sysconfdir}/rmt
 %{_mandir}/man8/rmt.8*
+
+%if %{with uclibc}
+%files -n uclibc-rmt
+%{uclibc_root}/sbin/rmt
+%endif
