@@ -19,6 +19,7 @@ URL:		http://sourceforge.net/projects/dump/
 Requires:	rmt = %{version}-%{release}
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ncursesw)
+BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	bzip2-devel
 BuildRequires:	pkgconfig(ext2fs) 
