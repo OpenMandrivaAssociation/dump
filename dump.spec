@@ -121,6 +121,11 @@ popd
 %install
 %if %{with uclibc}
 %makeinstall_std -C .uclibc SBINDIR=%{buildroot}%{uclibc_root}/sbin BINDIR=%{buildroot}%{uclibc_root}/sbin MANDIR=%{buildroot}%{_mandir}/man8
+for i in dump restore; do
+  mv %{buildroot}%{uclibc_root}/sbin/$i %{buildroot}%{uclibc_root}/sbin/$i.ext3
+  ln -s $i.ext3 %{buildroot}%{uclibc_root}/sbin/$i.ext2
+  ln -s $i.ext3 %{buildroot}%{uclibc_root}/sbin/$i
+done
 %endif
 
 make -C .system install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
