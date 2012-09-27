@@ -1,15 +1,11 @@
-%define	name	dump
-%define version 0.4b42
-%define release %mkrel 3
-
 Summary:	Programs for backing up and restoring filesystems
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		dump
+Version:	03.b42
+Release:	3
 License:	BSD
 Group:		Archiving/Backup
 
-Source: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
+Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
 Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
@@ -27,7 +23,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	openssl-devel >= 0.9.7a
 BuildRequires:	e2fsprogs-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The dump package contains both dump and restore.  Dump examines files in
@@ -72,8 +67,6 @@ autoconf
 %make OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
 
 %install
-rm -rf %{buildroot}
-
 make install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
 
 for i in dump restore; do
@@ -88,11 +81,7 @@ pushd %{buildroot}
   ln -s ../sbin/rmt ./%{_sysconfdir}/rmt
 popd
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc CHANGES COPYRIGHT KNOWNBUGS README THANKS TODO MAINTAINERS dump.lsm
 %attr(0664,root,disk)	%config(noreplace) %{_sysconfdir}/dumpdates
 #%attr(6755,root,tty)	/sbin/dump
@@ -107,7 +96,6 @@ rm -rf %{buildroot}
 %{_mandir}/man8/rrestore.8*
 
 %files -n rmt
-%defattr(-,root,root)
 %doc COPYRIGHT
 /sbin/rmt
 %{_sysconfdir}/rmt
