@@ -97,7 +97,8 @@ pushd .uclibc
 	--with-manowner=root \
 	--with-mangrp=root \
 	--with-manmode=644 \
-	--enable-ermt \
+	--enable-rmt \
+	--disable-ermt \
 	--disable-kerberos \
 	--disable-transselinux
 %make top_builddir=$PWD
