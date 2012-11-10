@@ -1,0 +1,11 @@
+--- dump-0.4b37/dump/main.c~	2004-07-05 17:12:45.000000000 +0200
++++ dump-0.4b37/dump/main.c	2004-07-22 15:40:02.389312890 +0200
+@@ -58,6 +58,8 @@ static const char rcsid[] =
+ #include <sys/time.h>
+ #include <time.h>
+ #ifdef __linux__
++typedef unsigned short  sa_family_t;
++#include <linux/netlink.h>
+ #include <linux/types.h>
+ #ifdef HAVE_EXT2FS_EXT2_FS_H
+ #include <ext2fs/ext2_fs.h>

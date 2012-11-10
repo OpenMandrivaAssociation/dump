@@ -1,0 +1,38 @@
+Since non-PIC support (see http://sourceware.org/ml/binutils/2008-06/msg00280.html for instance),
+binutils are a lot more picky about symbols.
+In this case, either dump wants to use glibc's __progname or it wants to define its own with the very
+same name (overriding the one from glibc). Both possibilities look wrong and  result in FTBFS on mips.
+
+Strangely, binutils are not complaining on other arches.
+
+---
+ dump/main.c    |    2 	1 +	1 -	0 !
+ restore/main.c |    2 	1 +	1 -	0 !
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: dump-0.4b41/dump/main.c
+===================================================================
+--- dump-0.4b41.orig/dump/main.c	2009-05-20 12:20:35.000000000 -0400
++++ dump-0.4b41/dump/main.c	2009-05-20 12:20:38.000000000 -0400
+@@ -184,7 +184,7 @@ long	uncomprblks = 0;/* uncompressed blo
+ long smtc_errno;
+ 
+ #ifdef	__linux__
+-char	*__progname;
++extern char	*__progname;
+ #endif
+ 
+ int 	maxbsize = 1024*1024;     /* XXX MAXBSIZE from sys/param.h */
+Index: dump-0.4b41/restore/main.c
+===================================================================
+--- dump-0.4b41.orig/restore/main.c	2005-07-07 05:16:08.000000000 -0400
++++ dump-0.4b41/restore/main.c	2009-05-20 12:20:52.000000000 -0400
+@@ -130,7 +130,7 @@ long long curtapepos;
+ long smtc_errno;
+ 
+ #if defined(__linux__) || defined(sunos)
+-char	*__progname;
++extern char	*__progname;
+ #endif
+ 
+ static void obsolete __P((int *, char **[]));
