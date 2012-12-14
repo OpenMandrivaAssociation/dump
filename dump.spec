@@ -3,7 +3,7 @@
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b42
-Release:	4
+Release:	5
 License:	BSD
 Group:		Archiving/Backup
 
@@ -101,7 +101,7 @@ pushd .uclibc
 	--disable-ermt \
 	--disable-kerberos \
 	--disable-transselinux
-%make top_builddir=$PWD
+%make top_builddir="$PWD"
 popd
 %endif
 
