@@ -21,6 +21,7 @@ BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(openssl)
 BuildRequires:	bzip2-devel
 BuildRequires:	pkgconfig(ext2fs) 
 %if %{with uclibc}
