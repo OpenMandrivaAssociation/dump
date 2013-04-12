@@ -6,7 +6,7 @@ Version:	0.4b42
 Release:	5
 License:	BSD
 Group:		Archiving/Backup
-
+Url:		http://sourceforge.net/projects/dump/
 Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
 Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
@@ -14,19 +14,18 @@ Patch3:		dump-0.4b37-compile-fix.patch
 Patch4:		dump_progname_mips.patch
 Patch5:		dump-rh507948.patch
 Patch6:		build-without-selinux.patch
-URL:		http://sourceforge.net/projects/dump/
 
-Requires:	rmt = %{version}-%{release}
-BuildRequires:	pkgconfig(blkid)
-BuildRequires:	pkgconfig(ncursesw)
-BuildRequires:	readline-devel
-BuildRequires:	pkgconfig(zlib)
-BuildRequires:	pkgconfig(openssl)
 BuildRequires:	bzip2-devel
+BuildRequires:	readline-devel
+BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ext2fs) 
+BuildRequires:	pkgconfig(ncursesw)
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(zlib)
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
 %endif
+Requires:	rmt = %{version}-%{release}
 
 %description
 The dump package contains both dump and restore.  Dump examines files in
@@ -72,13 +71,7 @@ restoring files from a backup) and tar (an archiving program).
 
 %prep
 %setup -q
-%patch0 -p0 -b .nonroot
-%patch2 -p1 -b .check-systypes
-%patch3 -p1 -b .compfix
-%patch4 -p1 -b .progname
-%patch5 -p1 -b .rh507948
-%patch6 -p0 -b .selinux
-
+%apply_patches
 autoconf
 
 %if %{with uclibc}
@@ -174,3 +167,4 @@ popd
 %files -n uclibc-rmt
 %{uclibc_root}/sbin/rmt
 %endif
+
