@@ -2,8 +2,8 @@
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
-Version:	0.4b42
-Release:	13
+Version:	0.4b44
+Release:	1
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
@@ -99,15 +99,15 @@ pushd .uclibc
 popd
 %endif
 
-pushd .system	
-%configure2_5x \
+pushd .system
+%configure \
 	--with-manowner=root \
 	--with-mangrp=root \
 	--with-manmode=644 \
 	--enable-ermt \
 	--disable-kerberos \
 	--disable-transselinux
-	
+
 %make
 popd
 
@@ -167,4 +167,3 @@ popd
 %files -n uclibc-rmt
 %{uclibc_root}/sbin/rmt
 %endif
-
