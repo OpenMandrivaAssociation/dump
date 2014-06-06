@@ -12,7 +12,6 @@ Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
 Patch4:		dump_progname_mips.patch
-Patch5:		dump-rh507948.patch
 Patch6:		build-without-selinux.patch
 
 BuildRequires:	bzip2-devel
