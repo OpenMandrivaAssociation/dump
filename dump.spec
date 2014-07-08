@@ -12,7 +12,7 @@ Patch0:		dump-nonroot.patch
 Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
 Patch4:		dump_progname_mips.patch
-Patch6:		build-without-selinux.patch
+Patch5:		dump-buildfix.patch
 
 BuildRequires:	bzip2-devel
 BuildRequires:	readline-devel
@@ -71,7 +71,8 @@ restoring files from a backup) and tar (an archiving program).
 %prep
 %setup -q
 %apply_patches
-autoconf
+autoreconf -fiv
+touch configure.in
 
 %if %{with uclibc}
 mkdir .uclibc
