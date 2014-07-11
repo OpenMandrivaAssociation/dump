@@ -3,7 +3,7 @@
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b44
-Release:	2
+Release:	3
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
