@@ -1,9 +1,9 @@
-%bcond_without	uclibc
+%bcond_with	uclibc
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b44
-Release:	6
+Release:	7
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
