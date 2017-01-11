@@ -1,9 +1,7 @@
-%bcond_with	uclibc
-
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b44
-Release:	9
+Release:	10
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
@@ -17,30 +15,13 @@ Patch5:		dump-buildfix.patch
 BuildRequires:	bzip2-devel
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(blkid)
-BuildRequires:	pkgconfig(ext2fs) 
+BuildRequires:	pkgconfig(ext2fs)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
-%if %{with uclibc}
-BuildRequires:	uClibc-devel >= 0.9.33.2-16
-%endif
-Requires:	rmt = %{version}-%{release}
+Requires:	rmt = %{EVRD}
 
 %description
-The dump package contains both dump and restore.  Dump examines files in
-a filesystem, determines which ones need to be backed up, and copies
-those files to a specified disk, tape or other storage medium.  The
-restore command performs the inverse function of dump; it can restore a
-full backup of a filesystem.  Subsequent incremental backups can then be
-layered on top of the full backup.  Single files and directory subtrees
-may also be restored from full or partial backups.
-
-%package -n	uclibc-%{name}
-Summary:	uClibc linked build of %{name}
-Group:		Archiving/Backup
-Requires:	uclibc-rmt = %{version}-%{release}
-
-%description -n	uclibc-%{name}
 The dump package contains both dump and restore.  Dump examines files in
 a filesystem, determines which ones need to be backed up, and copies
 those files to a specified disk, tape or other storage medium.  The
@@ -59,47 +40,13 @@ The rmt utility provides remote access to tape devices for programs
 like dump (a filesystem backup program), restore (a program for
 restoring files from a backup) and tar (an archiving program).
 
-%package -n	uclibc-rmt
-Summary:	uClibc linked build of rmt
-Group:		Archiving/Backup
-
-%description -n	uclibc-rmt
-The rmt utility provides remote access to tape devices for programs
-like dump (a filesystem backup program), restore (a program for
-restoring files from a backup) and tar (an archiving program).
-
 %prep
 %setup -q
 %apply_patches
 autoreconf -fiv
 touch configure.in
 
-%if %{with uclibc}
-mkdir .uclibc
-cp -a * .uclibc
-%endif
-
-mkdir .system
-cp -a * .system
-
 %build
-%if %{with uclibc}
-pushd .uclibc
-%uclibc_configure \
-	--sbindir=%{uclibc_root}/sbin \
-	--bindir=%{uclibc_root}/sbin \
-	--with-manowner=root \
-	--with-mangrp=root \
-	--with-manmode=644 \
-	--enable-rmt \
-	--disable-ermt \
-	--disable-kerberos \
-	--disable-transselinux
-%make top_builddir="$PWD"
-popd
-%endif
-
-pushd .system
 %configure \
 	--with-manowner=root \
 	--with-mangrp=root \
@@ -109,19 +56,9 @@ pushd .system
 	--disable-transselinux
 
 %make
-popd
 
 %install
-%if %{with uclibc}
-%makeinstall_std -C .uclibc SBINDIR=%{buildroot}%{uclibc_root}/sbin BINDIR=%{buildroot}%{uclibc_root}/sbin MANDIR=%{buildroot}%{_mandir}/man8
-for i in dump restore; do
-  mv %{buildroot}%{uclibc_root}/sbin/$i %{buildroot}%{uclibc_root}/sbin/$i.ext3
-  ln -s $i.ext3 %{buildroot}%{uclibc_root}/sbin/$i.ext2
-  ln -s $i.ext3 %{buildroot}%{uclibc_root}/sbin/$i
-done
-%endif
-
-make -C .system install SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
+%makeinstall_std SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
 
 for i in dump restore; do
   mv %{buildroot}/sbin/$i %{buildroot}/sbin/$i.ext3
@@ -149,21 +86,8 @@ popd
 %{_mandir}/man8/restore.8*
 %{_mandir}/man8/rrestore.8*
 
-%if %{with uclibc}
-%files -n uclibc-%{name}
-%{uclibc_root}/sbin/dump*
-%{uclibc_root}/sbin/restore*
-%{uclibc_root}/sbin/rdump
-%{uclibc_root}/sbin/rrestore
-%endif
-
 %files -n rmt
 %doc COPYRIGHT
 /sbin/rmt
 %{_sysconfdir}/rmt
 %{_mandir}/man8/rmt.8*
-
-%if %{with uclibc}
-%files -n uclibc-rmt
-%{uclibc_root}/sbin/rmt
-%endif
