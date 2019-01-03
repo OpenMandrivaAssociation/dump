@@ -6,12 +6,10 @@ License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
 Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
-Patch0:		dump-nonroot.patch
-Patch2:		dump-0.4b34-check-systypes.patch
-Patch3:		dump-0.4b37-compile-fix.patch
-Patch4:		dump_progname_mips.patch
-Patch5:		dump-buildfix.patch
-Patch6:		dump-0.4b46-openssl11.patch
+Patch0:		dump-0.4b37-compile-fix.patch
+Patch1:		dump_progname_mips.patch
+Patch2:		dump-buildfix.patch
+Patch3:		dump-0.4b46-openssl11.patch
 
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
