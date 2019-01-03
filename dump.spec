@@ -61,33 +61,35 @@ autoreconf -fi
 %make_install
 
 for i in dump restore; do
-  mv %{buildroot}/sbin/$i %{buildroot}/sbin/$i.ext3
-  ln -s $i.ext3 %{buildroot}/sbin/$i.ext2
-  ln -s $i.ext3 %{buildroot}/sbin/$i
+  mv %{buildroot}%{_sbindir}/$i %{buildroot}%{_sbindir}/$i.ext3
+  ln -s $i.ext3 %{buildroot}%{_sbindir}/$i.ext2
+  ln -s $i.ext3 %{buildroot}%{_sbindir}/$i
 done
 
 pushd %{buildroot}
   mkdir .%{_sysconfdir}
   > .%{_sysconfdir}/dumpdates
-  ln -s ../sbin/rmt ./%{_sysconfdir}/rmt
+  ln -s ..%{_sbindir}/rmt ./%{_sysconfdir}/rmt
 popd
 
 %files
-%doc CHANGES COPYRIGHT KNOWNBUGS README THANKS TODO MAINTAINERS dump.lsm
+%doc AUTHORS ChangeLog KNOWNBUGS NEWS README REPORTING-BUGS TODO MAINTAINERS dump.lsm
+%license COPYING
 %attr(0664,root,disk)	%config(noreplace) %{_sysconfdir}/dumpdates
-#%attr(6755,root,tty)	/sbin/dump
-/sbin/dump*
-#%attr(6755,root,tty)	/sbin/restore
-/sbin/restore*
-/sbin/rdump
-/sbin/rrestore
+#attr(6755,root,tty)	{_sbindir}/dump
+%{_sbindir}/dump*
+#attr(6755,root,tty)	{_sbindir}/restore
+%{_sbindir}/restore*
+%{_sbindir}/rdump
+%{_sbindir}/rrestore
 %{_mandir}/man8/dump.8*
 %{_mandir}/man8/rdump.8*
 %{_mandir}/man8/restore.8*
 %{_mandir}/man8/rrestore.8*
 
 %files -n rmt
-%doc COPYRIGHT
-/sbin/rmt
+%license COPYING
+%{_sbindir}/ermt
+%{_sbindir}/rmt
 %{_sysconfdir}/rmt
 %{_mandir}/man8/rmt.8*
