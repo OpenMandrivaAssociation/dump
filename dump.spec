@@ -11,14 +11,16 @@ Patch2:		dump-0.4b34-check-systypes.patch
 Patch3:		dump-0.4b37-compile-fix.patch
 Patch4:		dump_progname_mips.patch
 Patch5:		dump-buildfix.patch
+Patch6:		dump-0.4b46-openssl11.patch
 
-BuildRequires:	bzip2-devel
-BuildRequires:	readline-devel
+BuildRequires:	pkgconfig(bzip2)
+BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ext2fs)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(lzo2)
 Requires:	rmt = %{EVRD}
 
 %description
@@ -41,12 +43,12 @@ like dump (a filesystem backup program), restore (a program for
 restoring files from a backup) and tar (an archiving program).
 
 %prep
-%setup -q
-%apply_patches
-autoreconf -fiv
-touch configure.in
+%autosetup -p1
+rm -f compat/include/{lzoconf,minilzo}.h
+rm -f compat/lib/minilzo.c
 
 %build
+autoreconf -fi
 %configure \
 	--with-manowner=root \
 	--with-mangrp=root \
@@ -55,10 +57,10 @@ touch configure.in
 	--disable-kerberos \
 	--disable-transselinux
 
-%make
+%make_build OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
 
 %install
-%makeinstall_std SBINDIR=%{buildroot}/sbin BINDIR=%{buildroot}/sbin MANDIR=%{buildroot}%{_mandir}/man8
+%make_install
 
 for i in dump restore; do
   mv %{buildroot}/sbin/$i %{buildroot}/sbin/$i.ext3
