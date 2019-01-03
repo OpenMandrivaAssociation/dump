@@ -35,4 +35,4 @@ Index: dump-0.4b41/restore/main.c
 +extern char	*__progname;
  #endif
  
- static void obsolete __P((int *, char **[]));
+ static void obsolete (int *, char **[]);
