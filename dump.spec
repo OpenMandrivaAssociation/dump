@@ -8,13 +8,13 @@ Url:		http://sourceforge.net/projects/dump/
 Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
 Patch0:		dump-0.4b37-compile-fix.patch
 Patch1:		dump_progname_mips.patch
-Patch2:		dump-buildfix.patch
-Patch3:		dump-0.4b46-openssl11.patch
+Patch2:		dump-0.4b46-openssl11.patch
 
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(ext2fs)
+BuildRequires:	pkgconfig(com_err)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
