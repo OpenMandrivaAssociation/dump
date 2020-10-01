@@ -1,0 +1,148 @@
+diff -up dump-0.4b46/common/indexer_test.c.omv~ dump-0.4b46/common/indexer_test.c
+--- dump-0.4b46/common/indexer_test.c.omv~	2020-10-01 22:09:52.262424691 +0200
++++ dump-0.4b46/common/indexer_test.c	2020-10-01 22:09:56.835740320 +0200
+@@ -43,7 +43,7 @@ int tapeno;
+ struct slave slaves[SLAVES+1];
+ struct slave *slp;
+ 
+-union u_spcl u_spcl;
++extern union u_spcl u_spcl;
+ 
+ #ifdef __linux__
+ struct struct_ext2_filsys test_fs;
+diff -up dump-0.4b46/common/legacy_indexer.c.omv~ dump-0.4b46/common/legacy_indexer.c
+--- dump-0.4b46/common/legacy_indexer.c.omv~	2020-10-01 22:11:35.385366937 +0200
++++ dump-0.4b46/common/legacy_indexer.c	2020-10-01 22:14:38.127986015 +0200
+@@ -37,6 +37,7 @@
+ 
+ extern dump_ino_t volinfo[];  // TP_NINOS
+ extern int tapeno;
++extern union u_spcl u_spcl;
+ 
+ extern int Afile; /* archive file descriptor */
+ static int AfileActive = 1;/* Afile flag */
+@@ -49,12 +50,12 @@ static int GetTapePos (long long *);
+ static int MkTapeString (struct s_spcl *, long long);
+ #define FILESQFAPOS	20
+ 
+-int tapepos;
+-int ntrec;		/* blocking factor on tape */
+-int magtapeout;  /* is output a magnetic tape? */
+-//extern int tapepos;
+-//extern int ntrec;		/* blocking factor on tape */
+-//extern int magtapeout;  /* is output a magnetic tape? */
++//int tapepos;
++//int ntrec;		/* blocking factor on tape */
++//int magtapeout;  /* is output a magnetic tape? */
++extern int tapepos;
++extern int ntrec;		/* blocking factor on tape */
++extern int magtapeout;  /* is output a magnetic tape? */
+ 
+ static int gtperr = 0;
+ static int gTapeposfd = -1;			/* code below assumes fd >= 0 means do print */
+diff -up dump-0.4b46/compat/include/protocols/dumprestore.h.omv~ dump-0.4b46/compat/include/protocols/dumprestore.h
+--- dump-0.4b46/compat/include/protocols/dumprestore.h.omv~	2020-10-01 22:12:19.428538035 +0200
++++ dump-0.4b46/compat/include/protocols/dumprestore.h	2020-10-01 22:16:11.476395371 +0200
+@@ -81,7 +81,8 @@ typedef unsigned int	dump_ino_t;
+ union u_data {
+ 	char	s_addrs[TP_NINDIR];	/* 1 => data; 0 => hole in inode */
+ 	int32_t	s_inos[TP_NINOS];	/* table of first inode on each volume */
+-} u_data;
++};
++extern union u_data u_data;
+ 
+ union u_spcl {
+ 	char dummy[TP_BSIZE];
+@@ -116,7 +117,8 @@ union u_spcl {
+                 int32_t	c_extattributes;    /* additional inode info */
+                 int32_t	c_spare[30];	    /* reserved for future uses */
+ 	} s_spcl;
+-} u_spcl;
++};
++extern union u_spcl u_spcl;
+ #define spcl u_spcl.s_spcl
+ #define c_addr c_data.s_addrs
+ #define c_inos c_data.s_inos
+diff -up dump-0.4b46/dump/itime.c.omv~ dump-0.4b46/dump/itime.c
+--- dump-0.4b46/dump/itime.c.omv~	2020-10-01 22:09:35.295824020 +0200
++++ dump-0.4b46/dump/itime.c	2020-10-01 22:17:14.514073203 +0200
+@@ -71,9 +71,9 @@
+ 
+ #include "dump.h"
+ 
+-struct	dumpdates **ddatev;
++extern struct	dumpdates **ddatev;
+ int	nddates;
+-int	ddates_in;
++extern int	ddates_in;
+ struct	dumptime *dthead;
+ 
+ static	void dumprecout (FILE *, struct dumpdates *);
+diff -up dump-0.4b46/dump/main.c.omv~ dump-0.4b46/dump/main.c
+--- dump-0.4b46/dump/main.c.omv~	2020-10-01 22:09:07.792598767 +0200
++++ dump-0.4b46/dump/main.c	2020-10-01 22:18:02.891436679 +0200
+@@ -147,11 +147,13 @@ int	dev_bshift;	/* log2(dev_bsize) */
+ int	tp_bshift;	/* log2(TP_BSIZE) */
+ dump_ino_t volinfo[TP_NINOS];/* which inode on which volume archive info */
+ 
+-struct	dumptime *dthead;	/* head of the list version */
+-int	nddates;		/* number of records (might be zero) */
++extern struct	dumptime *dthead;	/* head of the list version */
++extern int	nddates;		/* number of records (might be zero) */
+ int	ddates_in;		/* we have read the increment file */
+ struct	dumpdates **ddatev;	/* the arrayfied version */
+ 
++union u_spcl u_spcl;
++
+ int	notify = 0;	/* notify operator flag */
+ int	blockswritten = 0;	/* number of blocks written on current tape */
+ int	tapeno = 0;	/* current tape number */
+diff -up dump-0.4b46/dump/tape.c.omv~ dump-0.4b46/dump/tape.c
+--- dump-0.4b46/dump/tape.c.omv~	2020-10-01 22:18:33.478511571 +0200
++++ dump-0.4b46/dump/tape.c	2020-10-01 22:18:41.221944493 +0200
+@@ -102,7 +102,7 @@ char	*nexttape;
+ extern  pid_t rshpid;
+ int 	eot_code = 1;
+ long long tapea_bytes = 0;	/* bytes_written at start of current volume */
+-static int magtapeout;		/* output is really a tape */
++int magtapeout;			/* output is really a tape */
+ 
+ static	ssize_t dump_atomic_read (int, char *, size_t);
+ static	ssize_t dump_atomic_write (int, const char *, size_t);
+diff -up dump-0.4b46/restore/main.c.omv~ dump-0.4b46/restore/main.c
+--- dump-0.4b46/restore/main.c.omv~	2020-10-01 22:20:00.392882108 +0200
++++ dump-0.4b46/restore/main.c	2020-10-01 22:20:09.676316345 +0200
+@@ -80,6 +80,8 @@
+ #include "restore.h"
+ #include "extern.h"
+ 
++union u_spcl u_spcl;
++
+ int abortifconnerr = 1;		/* set to 1 if lib dumprmt.o should exit on connection errors
+                                 otherwise just print a message using msg */
+ 
+diff -up dump-0.4b46/restore/restore.c.omv~ dump-0.4b46/restore/restore.c
+--- dump-0.4b46/restore/restore.c.omv~	2020-10-01 22:20:26.496494658 +0200
++++ dump-0.4b46/restore/restore.c	2020-10-01 22:20:40.343303863 +0200
+@@ -73,6 +73,8 @@
+ 
+ static char *keyval (int);
+ 
++struct context curfile;
++
+ /*
+  * This implements the 't' option.
+  * List entries on the tape.
+diff -up dump-0.4b46/restore/restore.h.omv~ dump-0.4b46/restore/restore.h
+--- dump-0.4b46/restore/restore.h.omv~	2020-10-01 22:18:57.742152075 +0200
++++ dump-0.4b46/restore/restore.h	2020-10-01 22:19:16.779049927 +0200
+@@ -139,7 +139,8 @@ struct context {
+ 	struct	dinode *dip;	/* pointer to inode */
+ #endif
+ 	char	action;		/* action being taken on this file */
+-} curfile;
++};
++extern struct context curfile;
+ /* actions */
+ #define	USING	1	/* extracting from the tape */
+ #define	SKIP	2	/* skipping */

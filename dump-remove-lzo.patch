@@ -1,11 +1,10 @@
-diff --git a/configure.in b/configure.in
-index e40e01b..cd8c35b 100644
---- a/configure.in
-+++ b/configure.in
-@@ -551,6 +551,23 @@ fi
- AC_SUBST(ZLIB)
+diff -up dump-0.4b46/configure.ac.4~ dump-0.4b46/configure.ac
+--- dump-0.4b46/configure.ac.4~	2020-10-01 22:05:29.253515108 +0200
++++ dump-0.4b46/configure.ac	2020-10-01 22:06:04.616692229 +0200
+@@ -365,6 +365,22 @@ if test "$enable_zlib" != "no"; then
+ 	fi
+ fi
  
- dnl
 +dnl Check for lzo headers and libraries
 +dnl
 +AC_CHECK_HEADER(lzo/minilzo.h, [minilzo_h=yes], [minilzo_h=no], [-])
@@ -22,7 +21,6 @@ index e40e01b..cd8c35b 100644
 +fi
 +AC_SUBST(LZOLIB)
 +
-+dnl
+ dnl
  dnl Check for bzlib headers and libraries
  dnl
- AC_CHECK_HEADER(bzlib.h, [bzlib_h=yes], [bzlib_h=no], [-])
