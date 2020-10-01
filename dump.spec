@@ -1,7 +1,7 @@
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b46
-Release:	2
+Release:	3
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
@@ -66,11 +66,11 @@ for i in dump restore; do
   ln -s $i.ext3 %{buildroot}%{_sbindir}/$i
 done
 
-pushd %{buildroot}
+cd %{buildroot}
   mkdir .%{_sysconfdir}
   > .%{_sysconfdir}/dumpdates
   ln -s ..%{_sbindir}/rmt ./%{_sysconfdir}/rmt
-popd
+cd ..
 
 %files
 %doc AUTHORS ChangeLog KNOWNBUGS NEWS README REPORTING-BUGS TODO MAINTAINERS dump.lsm
