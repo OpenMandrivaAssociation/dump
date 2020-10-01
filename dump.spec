@@ -9,7 +9,9 @@ Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{v
 Patch0:		dump-0.4b37-compile-fix.patch
 Patch1:		dump_progname_mips.patch
 Patch2:		dump-0.4b46-openssl11.patch
-
+Patch3:		dump-buildfix.patch
+Patch4:		dump-remove-lzo.patch
+Patch5:		dump-glibc_xattr.patch
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(blkid)
@@ -55,7 +57,7 @@ autoreconf -fi
 	--disable-kerberos \
 	--disable-transselinux
 
-%make_build OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts"
+%make_build OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts -fno-strict-aliasing"
 
 %install
 %make_install
