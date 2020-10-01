@@ -49,7 +49,7 @@ rm -f compat/include/{lzoconf,minilzo}.h
 rm -f compat/lib/minilzo.c
 
 %build
-autoreconf -fi
+autoreconf -fiv
 %configure \
 	--with-manowner=root \
 	--with-mangrp=root \
