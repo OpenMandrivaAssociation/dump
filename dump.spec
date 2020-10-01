@@ -1,3 +1,5 @@
+%define _disable_rebuild_configure 1
+
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b46
