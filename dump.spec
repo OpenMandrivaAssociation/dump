@@ -25,6 +25,7 @@ BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(lzo2)
 Requires:	rmt = %{EVRD}
+Requires:	setup
 
 %description
 The dump package contains both dump and restore.  Dump examines files in
