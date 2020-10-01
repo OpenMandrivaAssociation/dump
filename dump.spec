@@ -12,6 +12,7 @@ Patch2:		dump-0.4b46-openssl11.patch
 Patch3:		dump-buildfix.patch
 Patch4:		dump-remove-lzo.patch
 Patch5:		dump-glibc_xattr.patch
+BuildRequires:	libtool
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(blkid)
