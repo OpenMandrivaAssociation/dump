@@ -3,7 +3,7 @@
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
 Version:	0.4b46
-Release:	3
+Release:	4
 License:	BSD
 Group:		Archiving/Backup
 Url:		http://sourceforge.net/projects/dump/
@@ -90,14 +90,14 @@ cd ..
 %{_sbindir}/restore*
 %{_sbindir}/rdump
 %{_sbindir}/rrestore
-%{_mandir}/man8/dump.8*
-%{_mandir}/man8/rdump.8*
-%{_mandir}/man8/restore.8*
-%{_mandir}/man8/rrestore.8*
+%doc %{_mandir}/man8/dump.8*
+%doc %{_mandir}/man8/rdump.8*
+%doc %{_mandir}/man8/restore.8*
+%doc %{_mandir}/man8/rrestore.8*
 
 %files -n rmt
 %license COPYING
 %{_sbindir}/ermt
 %{_sbindir}/rmt
 %{_sysconfdir}/rmt
-%{_mandir}/man8/rmt.8*
+%doc %{_mandir}/man8/rmt.8*
