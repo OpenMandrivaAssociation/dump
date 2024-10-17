@@ -6,7 +6,7 @@ Version:	0.4b46
 Release:	5
 License:	BSD
 Group:		Archiving/Backup
-Url:		http://sourceforge.net/projects/dump/
+Url:		https://sourceforge.net/projects/dump/
 Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
 Patch0:		dump-0.4b37-compile-fix.patch
 Patch1:		dump_progname_mips.patch
