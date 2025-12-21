@@ -16,6 +16,11 @@ Patch4:		dump-glibc_xattr.patch
 Patch5:		dump-0.4b46-fix-build-with-modern-compilers.patch
 # Please do NOT import the "dump-buildfix.patch" Fedora applies here.
 # It is badly broken and unneeded.
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
