@@ -2,26 +2,16 @@
 
 Summary:	Programs for backing up and restoring filesystems
 Name:		dump
-Version:	0.4b46
-Release:	6
+Version:	0.4b56
+Release:	1
 License:	BSD
 Group:		Archiving/Backup
 Url:		https://sourceforge.net/projects/dump/
-Source0: 	ftp://osdn.dl.sourceforge.net/pub/sourceforge/d/du/%{name}/%{name}-%{version}.tar.gz
-Patch0:		dump-0.4b37-compile-fix.patch
-Patch1:		dump_progname_mips.patch
-Patch2:		dump-0.4b46-openssl11.patch
-Patch3:		dump-remove-lzo.patch
-Patch4:		dump-glibc_xattr.patch
-Patch5:		dump-0.4b46-fix-build-with-modern-compilers.patch
+Source0:	https://downloads.sourceforge.net/project/dump/dump/%{version}/dump-%{version}.tar.gz
 # Please do NOT import the "dump-buildfix.patch" Fedora applies here.
 # It is badly broken and unneeded.
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
-BuildRequires:	libtool
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(blkid)
@@ -31,6 +21,7 @@ BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(lzo2)
+BuildRequires:	pkgconfig(sqlite3)
 Requires:	rmt = %{EVRD}
 Requires:	setup
 
@@ -55,20 +46,17 @@ restoring files from a backup) and tar (an archiving program).
 
 %prep
 %autosetup -p1
-rm -f compat/include/{lzoconf,minilzo}.h
-rm -f compat/lib/minilzo.c
 
 %build
-autoreconf -fiv
+# configure.ac adds gcc-only -Wdiscarded-qualifiers; clang rejects unknown -W flags
+export CFLAGS="${CFLAGS:-%{optflags}} -Wno-unknown-warning-option -fno-strict-aliasing"
 %configure \
-	--with-manowner=root \
-	--with-mangrp=root \
-	--with-manmode=644 \
 	--enable-ermt \
-	--disable-kerberos \
-	--disable-transselinux
+	--disable-selinux \
+	--disable-werror \
+	--with-dumpdatespath=%{_sysconfdir}/dumpdates
 
-%make_build OPT="$RPM_OPT_FLAGS -fPIC -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts -fno-strict-aliasing"
+%make_build
 
 %install
 %make_install
