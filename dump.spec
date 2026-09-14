@@ -11,6 +11,7 @@ Source0:	https://downloads.sourceforge.net/project/dump/dump/%{version}/dump-%{v
 # Please do NOT import the "dump-buildfix.patch" Fedora applies here.
 # It is badly broken and unneeded.
 BuildRequires:	slibtool
+BuildRequires:	gnu-config
 BuildRequires:	make
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(readline)
